@@ -1,0 +1,212 @@
+/* ===============================
+   EXPLORE AI GALLERY GRID
+================================ */
+
+.explore-ai-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 22px;
+  margin-top: 20px;
+}
+
+
+/* ===============================
+   EXPLORE AI CARD
+================================ */
+
+.explore-gen-img-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #f6f6f6;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.explore-gen-img-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 32px rgba(0,0,0,0.12);
+}
+
+
+/* Image */
+
+.explore-gen-img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.explore-gen-img-card:hover .explore-gen-img {
+  transform: scale(1.05);
+}
+
+/* Hover overlay */
+
+.explore-gen-hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(0,0,0,0),
+    rgba(0,0,0,0.35)
+  );
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.25s ease;
+}
+
+.explore-gen-img-card:hover .explore-gen-hover-overlay {
+  opacity: 1;
+}
+
+
+/* Icon */
+.explore-gen-hover-icon {
+  color: white;
+  font-size: 22px;
+  opacity: 0.9;
+}
+
+/* ===============================
+   EXPLORE MOODBOARDS GRID
+================================ */
+
+.explore-boards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+
+/* ===============================
+   MOODBOARD CARD
+================================ */
+
+.explore-board-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: white;
+  cursor: pointer;
+
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.explore-board-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.12);
+}
+
+.explore-thumb-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+
+  transition: transform .35s ease;
+}
+
+.explore-board-card:hover .explore-thumb-img {
+  transform: scale(1.05);
+}
+
+/* Title overlay */
+.explore-board-meta {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+
+  padding: 10px 14px;
+
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(6px);
+
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+
+  transition: transform .2s ease, background .2s ease;
+}
+
+.explore-board-meta h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.explore-board-card:hover .explore-board-meta {
+  transform: translateY(-2px);
+  background: rgba(0,0,0,0.45);
+}
+
+/* Subtle border */
+
+.explore-board-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04);
+}
+
+
+/* Category badge */
+
+.explore-board-category {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(4px);
+
+  padding: 4px 10px;
+  border-radius: 20px;
+
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .3px;
+}
+
+/* Title area */
+
+.explore-board-info {
+  padding: 12px 14px;
+}
+
+.explore-board-info h3 {
+  margin: 0;
+
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+
+  line-height: 1.35;
+}
+.explore-clone-btn{
+  margin-top:8px;
+  padding:6px 10px;
+
+  font-size:12px;
+  font-weight:500;
+
+  border:none;
+  border-radius:8px;
+
+  background:#111;
+  color:white;
+
+  cursor:pointer;
+  transition:all .2s ease;
+}
+
+.explore-clone-btn:hover{
+  background:#333;
+}

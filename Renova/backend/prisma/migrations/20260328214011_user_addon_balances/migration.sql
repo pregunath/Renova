@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `user` ADD COLUMN `bankedGenerationsPurchased` INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN `bankedGenerationsRemaining` INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN `moodboardsExtraSlots` INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN `processedAddonSessions` JSON NULL;

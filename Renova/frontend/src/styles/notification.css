@@ -1,0 +1,120 @@
+.notification-container {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 400px;
+}
+
+.notification {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: slideIn 0.3s ease-out;
+  border-left: 4px solid;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.notification-error {
+  border-left-color: #ff4d4f;
+}
+
+.notification-success {
+  border-left-color: #52c41a;
+}
+
+.notification-warning {
+  border-left-color: #faad14;
+}
+
+.notification-info {
+  border-left-color: #1890ff;
+}
+
+.notification-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.notification-error .notification-icon {
+  background: #fff1f0;
+  color: #ff4d4f;
+}
+
+.notification-success .notification-icon {
+  background: #f6ffed;
+  color: #52c41a;
+}
+
+.notification-warning .notification-icon {
+  background: #fffbe6;
+  color: #faad14;
+}
+
+.notification-info .notification-icon {
+  background: #e6f7ff;
+  color: #1890ff;
+}
+
+.notification-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-message {
+  font-weight: 600;
+  font-size: 14px;
+  color: #262626;
+  margin-bottom: 4px;
+}
+
+.notification-description {
+  font-size: 14px;
+  color: #595959;
+  line-height: 1.5;
+}
+
+.notification-close {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #8c8c8c;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.notification-close:hover {
+  color: #262626;
+}

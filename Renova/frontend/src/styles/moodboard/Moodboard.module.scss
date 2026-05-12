@@ -1,0 +1,2318 @@
+.pageRoot {
+  padding-top: 10px;
+  position: relative;
+  min-height: 100vh;
+  background-color: #f6f6f6;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  padding-bottom: 150px;
+}
+
+.layout {
+  --sidebar-open-width: 420px;
+  margin-top: 60px;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: var(--sidebar-open-width) 1fr;
+  gap: 22px;
+  padding: 40px 24px 120px 0;
+  transition: grid-template-columns 0.22s ease, gap 0.22s ease;
+}
+
+.backLink {
+  position: absolute;
+  top: 62px;
+  left: 26px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #7a7a7a;
+  text-decoration: none;
+  transition: color 0.15s ease;
+  z-index: 3;
+}
+
+.backLink:hover {
+  color: #2db4c7;
+  text-decoration: none;
+}
+
+:global(body).moodboardPageBody {
+  background-color: #F6F6F6;
+}
+
+@media (min-width: 1200px) {
+  .layout {
+    --sidebar-open-width: 400px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .layout {
+    --sidebar-open-width: 300px;
+    gap: 14px;
+    padding: 30px 16px 100px 0;
+  }
+}
+
+.boardPlaceholder {
+  width: 900px;
+  height: 600px;
+  opacity: 0;
+}
+
+.boardStageWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background: #fff;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12);
+}
+
+.boardStage {
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+}
+
+.sidebarWrap {
+  position: relative;
+  height: calc(100vh * 0.8);
+  min-height: calc(100vh * 0.8);
+  width: var(--sidebar-open-width);
+  overflow: visible;
+  transition: width 0.22s ease;
+}
+
+.sidebarViewport {
+  height: 100%;
+  overflow: hidden;
+  border-radius: 0 12px 12px 0;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+  background: #fff;
+}
+
+.sidebar {
+  width: var(--sidebar-open-width);
+  border: none;
+  border-radius: 0 12px 12px 0;
+  padding: 16px;
+  height: 100%;
+  min-height: 0;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: none;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+  transform: translateX(0);
+}
+
+.sidebarToggle {
+  position: absolute;
+  top: 50%;
+  right: -22px; 
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.sidebarToggle img {
+  display: block;
+  width: 20px;
+  height: 20px;
+  filter: brightness(84%) contrast(86%) saturate(100%) invert(74%) sepia(0%) saturate(0%) hue-rotate(163deg);
+}
+
+.sidebarTabs {
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 14px;
+  padding-bottom: 4px;
+}
+
+.layoutSidebarCollapsed {
+  grid-template-columns: 36px 1fr;
+  gap: 8px;
+}
+
+.sidebarWrapCollapsed {
+  width: 36px;
+  min-width: 36px;
+}
+
+.sidebarCollapsed {
+  transform: translateX(calc(-1 * (var(--sidebar-open-width) - 36px)));
+}
+
+.sidebarCollapseButton {
+  position: absolute;
+  top: 50%;
+  right: -15px;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 6;
+  padding: 0;
+  cursor: pointer;
+}
+
+.sidebarCollapseChevron {
+  font-size: 26px;
+  line-height: 1;
+  color: #b8b8b8;
+  display: block;
+}
+
+.sidebarCollapseChevronOpen {
+  transform: translate(0px, -2px);
+}
+
+.sidebarCollapseChevronCollapsed {
+  transform: translate(2px, -2px);
+}
+
+.tabBtn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: #5a5a5a;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 600; 
+  font-size: 15px;  
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  padding: 8px 12px;
+  transition: color 0.2s ease;
+}
+
+.tabBtn:hover {
+  transform: scale(1.15);
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.tabBtnActive {
+  color: #2db4c7;
+}
+
+.sidebarBody {
+  padding-top: 8px;
+  padding-right: 10px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.22) transparent;
+}
+
+.sidebarBody::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebarBody::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebarBody::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.22);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.sidebarBody::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.34);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.sidebarPanelActive {
+  display: block;
+}
+
+.sidebarPanelHidden {
+  display: none;
+}
+
+.canvasCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.canvasCardWrap {
+  position: relative;
+}
+
+.isLoading {
+  filter: blur(3px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.boardLoadingOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  background: rgba(255,255,255,0.35);
+  backdrop-filter: blur(6px);
+  border-radius: 12px;
+}
+
+.boardImageLoadingOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 6;
+  pointer-events: none;
+  border-radius: 12px;
+}
+
+.canvasToolbar {
+  position: absolute;
+  bottom: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 12px;
+  padding: 1px 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12);
+  z-index: 2;
+  white-space: nowrap;
+  width: max-content;
+}
+
+.toolbarRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 18px;
+}
+
+.toolBtn {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 8px 6px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: default;
+}
+
+.toolBtn:hover {
+  background: rgba(0,0,0,0.035);
+}
+
+.toolBtnDisabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.toolIcon {
+  line-height: 0;
+}
+
+.toolLabel {
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.2px;
+}
+
+/* --- AI Gen view --- */
+.aiGenWrap {
+  position: relative;
+  color: #111;
+
+  :global(.ant-message) {
+    z-index: 4000;
+  }
+
+  :global(.ant-message-notice) {
+    padding: 8px 0;
+  }
+}
+
+.aiGenInner {
+  position: relative;
+  transition: filter 0.2s ease, opacity 0.2s ease;
+}
+
+.aiGenBlurred {
+  filter: blur(2px);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.aiGenOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  pointer-events: auto; 
+}
+
+.aiGenOverlayText {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #555;
+}
+
+.generationsEmpty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px;
+  padding: 0 12px;
+}
+
+.sectionTitle {
+  margin: 1 0 10px 0;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.sectionSpacer { height: 18px; }
+
+.selectedItemsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.itemCard {
+  height: 84px;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.itemThumb {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.itemThumbImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.itemThumbOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.itemCard:hover .itemThumbOverlay {
+  opacity: 1;
+}
+
+.itemThumbAction {
+  border: 0;
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  background: #ffffff;
+  color: #111;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.itemThumbAction:hover {
+  background: #2db4c7;
+  color: #fff;
+}
+
+.selectItemsBtn {
+  appearance: none;
+  border: 1px solid #d9d9d9;
+  background: #fff;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 500;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+}
+
+.selectItemsBtn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.uploadDragger {
+  border: 1px dashed #d9d9d9;
+  border-radius: 16px;
+  width: calc(100% - 20px) !important;
+  display: block;
+}
+
+.uploadDragger:has(.roomImageThumb) {
+  border: none !important;
+}
+
+.uploadDragger :global(.ant-upload-drag) {
+  border: none !important;
+  padding: 0 !important;
+}
+
+.uploadDragger :global(.ant-upload-btn) {
+  padding: 0 !important;
+}
+
+.uploadDragger :global(.ant-upload-drag-container) {
+  padding: 0 !important;
+}
+
+.uploadInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;  
+  gap: 8px;
+  padding: 18px 6px;
+  min-height: 130px; 
+}
+
+
+.uploadArrow {
+  width: 28px;
+  height: 28px;
+  filter: brightness(0) saturate(100%) invert(55%) sepia(0%) saturate(0%) hue-rotate(163deg) opacity(0.8);
+}
+
+.uploadText {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.promptArea {
+  width: calc(100% - 20px) !important;
+  border-radius: 10px !important;
+  padding: 10px 12px !important;
+  border: 1px solid #d9d9d9 !important;
+  box-shadow: none !important;
+  resize: none !important;
+}
+
+.promptArea:hover {
+  border-color: #d9d9d9 !important;
+  box-shadow: none !important;
+}
+
+.promptArea:focus,
+.promptArea:focus-within,
+.promptArea:focus-visible {
+  border-color: #d9d9d9 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.generateRow {
+  display: flex;
+  justify-content: center;
+  padding: 18px 0 4px;
+  margin-top: 18px;
+}
+
+.generateBtn {
+  border: 0 !important;
+  background: #63c7d6 !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  padding: 16px 18px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: none !important;
+  transition: box-shadow 0.15s ease, transform 0.15s ease, filter 0.15s ease;
+}
+
+
+.generateBtn:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 12px rgba(99, 199, 214, 0.16) !important;
+  filter: brightness(1.015) !important;
+}
+
+.generateBtn:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 4px 10px rgba(99, 199, 214, 0.16) !important;
+  filter: none !important;
+}
+
+.generateBtn:focus,
+.generateBtn:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.generateBtn img {
+  filter: brightness(0) invert(1);
+}
+
+.modelPickerSection {
+  position: relative;
+}
+
+.modelPickerButton {
+  width: 100%;
+  min-height: 62px;
+  border: 1px solid #e3e6ea;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+}
+
+.modelPickerButton:hover {
+  border-color: #d5dbe3;
+  background: #fbfbfc;
+}
+
+.modelPickerButton:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.modelPickerLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.modelLogoWrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: #f5f6f8;
+  border: 1px solid #eceff3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.modelLogo {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
+}
+
+.modelPickerText {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.modelPickerValue {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1b1b1b;
+  line-height: 1.25;
+  text-align: left;
+}
+
+.modelPickerDescription {
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #747b85;
+  line-height: 1.3;
+  text-align: left;
+}
+
+.modelPickerChevron {
+  font-size: 18px;
+  line-height: 1;
+  color: #9aa1aa;
+  transform: rotate(0deg);
+  transition: transform 0.16s ease;
+  flex-shrink: 0;
+}
+
+.modelPickerChevronOpen {
+  transform: rotate(90deg);
+}
+
+.modelMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  background: #ffffff;
+  border: 1px solid #e3e6ea;
+  border-radius: 14px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.modelMenuItem {
+  width: 100%;
+  border: none;
+  background: transparent;
+  border-radius: 12px;
+  padding: 9px 10px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.modelMenuItem:hover {
+  background: #f6f8fa;
+}
+
+.modelMenuItemActive {
+  background: rgba(99, 199, 214, 0.12);
+}
+
+.modelMenuItemLeft {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modelMenuItemText {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.modelMenuItemLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1b1b1b;
+  line-height: 1.25;
+  text-align: left;
+}
+
+.modelMenuItemCheck {
+  font-size: 16px;
+  font-weight: 800;
+  color: #63c7d6;
+  flex-shrink: 0;
+  margin-top: 9px;
+}
+
+.modelMenuItemDescription {
+  margin-top: 1px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #747b85;
+  line-height: 1.3;
+  text-align: left;
+}
+
+.canvasActions {
+  position: absolute;
+  top: -48px;
+  right: 0;
+  display: flex;
+  gap: 8px;
+  z-index: 3;
+}
+
+.actionsRow {
+  display: flex;
+  gap: 10px;
+}
+
+.actionBtn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  transition: background 0.15s ease;
+}
+
+.actionBtn:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.actionBtnActive {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.actionBtn:disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.projectNameBox {
+  position: absolute;
+  top: -48px;
+  left: 0;
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 10px;
+  z-index: 2;
+}
+
+.projectLabel,
+.projectValue {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.4px;
+  color: #111;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  padding: 0;
+}
+
+.projectValue {
+  font-weight: 700;
+  min-width: 220px;
+  max-width: 52ch;
+}
+
+.viewModeSwitchWrap {
+  position: static;
+  display: inline-flex;
+  align-items: flex-end;
+  margin-left: -2px;
+  flex-shrink: 0;
+}
+
+.viewModeSwitch {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px;
+  background: #f4f4f4;
+  border: 1px solid #dddddd;
+  border-radius: 9px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.viewModeBtn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  min-width: 92px;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  color: #6b6b6b;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  transition: background 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.viewModeBtn:hover {
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.viewModeBtnActive {
+  background: #ffffff;
+  color: #2db4c7;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.viewModeIcon {
+  width: 12px;
+  height: 12px;
+  display: block;
+  flex-shrink: 0;
+  opacity: 0.82;
+}
+
+.viewModeBtnActive .viewModeIcon {
+  opacity: 1;
+}
+
+.viewModeLabel {
+  display: block;
+  line-height: 1;
+}
+
+
+/* ---------- LIST VIEW ---------- */
+
+.boardListCard {
+  width: calc((100vh * 0.8) * 1.5);
+  height: calc(100vh * 0.8);
+  max-width: calc(100vw - 520px);
+  max-height: calc(100vh * 0.8);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.boardListEmpty {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #777;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.boardListScroll {
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  background: #fff;
+}
+
+.boardListTable {
+  width: 100%;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+  background: #fff;
+}
+
+.boardListTable thead th {
+  background: #f7f7f8;
+  color: #555;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: left;
+  padding: 15px 12px;
+  border-bottom: 1px solid #e8e8e8;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.boardListRow td {
+  padding: 12px;
+  border-bottom: 1px solid #ededed;
+  vertical-align: middle;
+  background: #fff;
+}
+
+.boardListRow:last-child td {
+  border-bottom: none;
+}
+
+.boardListRow:hover td {
+  background: #fff;
+}
+
+.boardListRowSelected td {
+  background: #fff;
+}
+
+.boardListRowHidden td {
+  opacity: 0.52;
+}
+
+.listIndexHead,
+.listIndexCell {
+  width: 40px;
+  text-align: center;
+}
+
+.listIndexCell {
+  font-size: 15px;
+  font-weight: 700;
+  color: #666;
+}
+
+.listPreviewHead,
+.listPreviewCell {
+  width: 110px;
+}
+
+.listPreviewCell {
+  min-width: 110px;
+}
+
+.listThumbWrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f4f4f4;
+  border: 1px solid #e7e7e7;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.listThumbImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.listTextThumbWrap,
+.listDrawingThumbWrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #fbfbfb 0%, #f4f4f4 100%);
+  border: 1px solid #e7e7e7;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  position: relative;
+}
+
+.listTextThumbWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.listTextThumbInner {
+  width: 100%;
+  max-height: 100%;
+  color: #202020;
+  font-weight: 700;
+  text-align: left;
+  overflow: hidden;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+}
+
+.listDrawingThumbWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.listDrawingThumbSvg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.listPreviewFallback {
+  width: 72px;
+  min-height: 72px;
+  border-radius: 12px;
+  border: 1px solid #e7e7e7;
+  background: linear-gradient(180deg, #fbfbfb 0%, #f5f5f5 100%);
+  padding: 7px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.listPreviewTypeBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: #eef9fb;
+  color: #2db4c7;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.listPreviewSnippet {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #6a6a6a;
+  word-break: break-word;
+}
+
+.listFieldInput {
+  width: 100%;
+  height: 40px;
+  border: 1px solid #dcdfe4;
+  border-radius: 12px;
+  background: #fff;
+  padding: 0 13px;
+  font-size: 13px;
+  color: #333;
+  outline: none;
+  box-shadow: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.listFieldInput::placeholder {
+  color: #9a9a9a;
+}
+
+.listFieldInput:focus {
+  border-color: #63c7d6;
+  box-shadow: none;
+}
+
+.listUrlFieldWrap {
+  position: relative;
+  width: 100%;
+}
+
+.listUrlInput {
+  padding-left: 40px;
+}
+
+.listUrlIconBtn {
+  position: absolute;
+  top: 50%;
+  left: 11px;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.listUrlIcon {
+  width: 14px;
+  height: 14px;
+  display: block;
+  opacity: 0.7;
+}
+
+.listUrlIconBtn:hover .listUrlIcon {
+  opacity: 1;
+}
+
+.listQtyHead,
+.listQtyCell {
+  width: 96px;
+  text-align: center;
+}
+
+.listQtyInput {
+  width: 76px;
+  text-align: center;
+  padding: 0 8px;
+}
+
+.listCostHead,
+.listCostCell {
+  width: 116px;
+}
+
+.listCostInput {
+  width: 104px;
+}
+
+.listActionHead,
+.listActionCell {
+  width: 104px;
+  text-align: center;
+}
+
+.listActionCell:last-child {
+  padding-right: 18px;
+}
+
+.listActionCell {
+  white-space: nowrap;
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+.listToggleBtn {
+  appearance: none;
+  border: 1px solid #d8dce2;
+  background: #fff;
+  min-width: 78px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  color: #666;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.listToggleBtn:hover {
+  background: #fafafa;
+  border-color: #cfd5dc;
+}
+
+.listToggleBtnLocked {
+  background: #eef9fb;
+  border-color: #bfe8ee;
+  color: #2db4c7;
+}
+
+.listToggleBtnHidden {
+  background: #f4f4f4;
+  border-color: #d8d8d8;
+  color: #5b5b5b;
+}
+
+@media (max-width: 1400px) {
+  .boardListCard {
+    max-width: calc(100vw - 470px);
+  }
+}
+
+/* --- AI Gen: Select Items modal --- */
+
+.modalItemsGrid {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+
+.modalItemCard {
+  appearance: none;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  padding: 0;
+  background: #fafafa;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  overflow: hidden;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.modalItemCard:hover {
+  background-color: #f5f5f5;
+}
+
+.modalItemCardSelected {
+  border-color: #2db4c7;
+  transform: translateY(-1px);
+  background-color: #eef9fb;
+}
+
+.modalItemImage {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.modalFooterInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #666;
+}
+
+.modalWarning {
+  color: #e03131;
+  font-weight: 500;
+}
+
+.roomImageThumb {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f9fafb;
+}
+
+.roomImageThumb:hover .itemThumbOverlay {
+  opacity: 1;
+}
+
+.roomImageThumbImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* --- Pinterest View --- */
+
+.pinterestConnect,
+.pBoardsWrap,
+.pPinsWrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Pinterest Connect View */
+.pinterestConnect {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  color: #444;
+}
+
+.pinterestLogo {
+  width: 48px;
+  height: 48px;
+}
+
+.pinterestTitle {
+  margin: 0;
+  font-weight: 500;
+  font-size: 16px;
+  color: #555;
+}
+
+.pinterestBtn {
+  padding: 10px 20px;
+  border-radius: 12px;
+  width: 150px;
+  font-weight: 400;
+  color: #5a5a5a;
+}
+
+/* Pinterest Header */
+.pHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  background: white;
+}
+
+.pUser {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.pUsername {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.pLink {
+  background: none;
+  border: 0;
+  color: #1890ff;
+  font-size: 14px;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.pActions {
+  display: flex;
+  gap: 8px;
+}
+
+.iconBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid #d9d9d9;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    border-color: #1890ff;
+    color: #1890ff;
+  }
+}
+
+/* Boards List */
+.pBoardsWrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.pBoardsList {
+  padding: 0;
+  flex: 1;
+  overflow-y: auto;
+  max-height: 650px;
+  
+  /* Hide scrollbar but keep functionality */
+  &::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+  
+  /* Firefox */
+  scrollbar-width: none;
+  
+  /* IE and Edge */
+  -ms-overflow-style: none;
+}
+
+.pBoardItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 20px;
+  border: none;
+  background: none;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+
+.pBoardImage {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  margin-right: 12px;
+}
+
+.pBoardDescription {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #666;
+}
+  &:hover {
+    background-color: #f8f9fa;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.pBoardInfo {
+  flex: 1;
+  text-align: left;
+}
+
+.pBoardName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 4px;
+}
+
+.pBoardMeta {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: #666;
+}
+
+.pBoardPinCount {
+  font-weight: 500;
+}
+
+.pBoardUpdated {
+  color: #999;
+}
+
+.pBoardArrow {
+  color: #999;
+  font-size: 18px;
+  font-weight: 300;
+}
+
+/* DIALOG BOX POSITIONED TO THE LEFT */
+.sidebarModal {
+  .ant-modal {
+    top: 50% !important;
+    transform: translateY(-50%) !important; /* Only vertical centering */
+    z-index: 1001 !important;
+    margin: 0 !important;
+  }
+}
+
+/* Remove global modal mask - NO MOODBOARD DARKENING */
+.ant-modal-mask {
+  display: none !important;
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* Pinterest View - SIDEBAR ONLY DARKENING */
+.pPinsWrap {
+  position: relative;
+  height: 100%;
+
+  &.modalOpen {
+    .pinsGrid {
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .pinsContainer {
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 10;
+        border-radius: 0 0 12px 12px;
+      }
+    }
+
+    .pHeader {
+      position: relative;
+      z-index: 11;
+      background: white;
+    }
+
+    .pinsGrid {
+      position: relative;
+      z-index: 11;
+    }
+
+    .pinCard {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+  }
+}
+
+/* Pins Container */
+.pPinsWrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.pinsContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.pBoardHeader {
+  padding: 20px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.pBoardTitle {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #000;
+}
+
+.pBoardStats {
+  font-size: 14px;
+  color: #666;
+}
+
+.pinsGrid {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 650px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  align-content: flex-start;
+  
+  /* Hide scrollbar but keep functionality */
+  &::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+  
+  /* Firefox */
+  scrollbar-width: none;
+  
+  /* IE and Edge */
+  -ms-overflow-style: none;
+}
+
+.pinCard {
+  background: white;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #1890ff;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+  }
+}
+
+.pinImageContainer {
+  width: 100%;
+  min-height: 180px;
+  max-height: 300px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+}
+
+.pinImage {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.3s ease;
+
+  .pinCard:hover & {
+    transform: scale(1.05);
+  }
+}
+
+.pinInfo {
+  padding: 16px;
+  border-top: 1px solid #f8f9fa;
+}
+
+.pinDescription {
+  margin-bottom: 8px;
+  color: #666;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.pinMeta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.pinDimensions {
+  font-size: 12px;
+  color: #999;
+}
+
+.pinTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 8px;
+  line-height: 1.4;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2; 
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pinDate {
+  font-size: 12px;
+  color: #999;
+}
+
+/* Empty state */
+.pPinsEmpty {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+  color: #999;
+  text-align: center;
+
+  img {
+    width: 100px;
+    height: 100px;
+    opacity: 0.5;
+    margin-bottom: 24px;
+  }
+
+  h4 {
+    margin: 0 0 12px 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: #666;
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}
+
+/* Loading state */
+.pinterestConnect:has(.ant-spin) {
+  justify-content: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1400px) {
+  .pinsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-height: 800px) {
+  .pinImageContainer {
+    max-height: 250px;
+  }
+
+  .pinImage {
+    max-height: 250px;
+  }
+}
+
+/* Image quality enhancement */
+.pinImage {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: high-quality;
+}
+
+.editorPageContent {
+  width: 100%;
+  padding-bottom: 90px;
+}
+
+.otherMoodboardsSection {
+  width: calc(100% - 140px);
+  margin: -40px 75px 0 75px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12);
+  padding: 28px 34px 34px;
+}
+
+.otherMoodboardsTitle {
+  margin: 0 0 24px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+}
+
+.otherMoodboardsLoading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 140px;
+}
+
+.otherMoodboardsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.otherMoodboardCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.otherMoodboardThumbWrap {
+  width: 100%;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+.otherMoodboardThumb {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  display: block;
+  object-fit: cover;
+}
+
+.otherMoodboardThumbSkeleton {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: #ececec;
+}
+
+.otherMoodboardMeta {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.otherMoodboardName {
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+}
+
+.bgModeCancelBtn,
+.bgModeDoneBtn {
+  position: fixed;
+  top: 24px;
+  z-index: 200;
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.bgModeCancelBtn {
+  left: 24px;
+  background: #ffffff;
+  color: #333;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+}
+
+.bgModeDoneBtn {
+  right: 24px;
+  background: #63c7d6;
+  color: #fff;
+}
+
+.bgModeCancelBtn:hover,
+.bgModeDoneBtn:hover {
+  transform: translateY(-1px);
+}
+
+.bgPickerDock {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px 14px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12);
+}
+
+.bgPickerSwatch {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+}
+
+.bgColorInput {
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.bgColorInput::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.bgColorInput::-webkit-color-swatch {
+  border: none;
+  border-radius: 0;
+}
+
+.bgHexInput {
+  width: 100px;
+  height: 42px;
+  border: 1px solid #d9d9d9;
+  border-radius: 12px;
+  padding: 0 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  outline: none;
+}
+
+/* Desktop transparent wrappers (become real containers on mobile) */
+.mobileTopBar {
+  display: contents;
+}
+
+.mobileViewToggle {
+  display: none;
+}
+
+.canvasHeader {
+  display: contents;
+}
+
+/* ── Mobile FAB (hidden on desktop) ── */
+.mobileSidebarBtn {
+  display: none;
+}
+
+/* ──────────────────────────────────────────────
+   MOBILE  ≤ 767px
+   ────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Mobile top bar: backLink + view toggle side by side */
+  .mobileTopBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 16px 22px;
+  }
+
+  /* Mobile-only view toggle: visible */
+  .mobileViewToggle {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+  }
+
+  /* Canvas header row: project name (left) + board actions (right) */
+  .canvasHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 18px;
+    gap: 12px;
+  }
+
+  /* Back link: pull into normal doc flow, padding handled by mobileTopBar */
+  .backLink {
+    position: static;
+    display: inline-flex;
+    padding: 0;
+    font-size: 14px;
+  }
+
+  /* Layout: drop grid, stack column. */
+  .layout {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0;
+    padding: 8px 12px 80px;
+    gap: 0;
+    z-index: auto;
+  }
+
+  /* Sidebar → fixed left drawer (below AppHeader, above page content) */
+  .sidebarWrap {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 85vw;
+    max-width: 380px;
+    height: auto;
+    min-height: auto;
+    z-index: 10;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.18);
+    overflow: visible;
+  }
+
+  /* Open = not collapsed on mobile */
+  .sidebarWrap:not(.sidebarWrapCollapsed) {
+    transform: translateX(0);
+  }
+
+  /* Reset desktop collapsed width override */
+  .sidebarWrapCollapsed {
+    width: 85vw;
+    min-width: unset;
+  }
+
+  /* Sidebar viewport: clear AppHeader space at top */
+  .sidebarViewport {
+    height: 100%;
+    border-radius: 0 12px 12px 0;
+    padding-top: 64px;
+  }
+
+  /* Fill the drawer width — fixes empty right space */
+  .sidebar {
+    width: 100%;
+  }
+
+  /* Ensure sidebar body is scrollable */
+  .sidebarBody {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Reset desktop slide-out transform (not needed on mobile) */
+  .sidebarCollapsed {
+    transform: none;
+  }
+
+  /* Hide the desktop collapse toggle inside sidebar */
+  .sidebarCollapseButton {
+    display: none;
+  }
+
+  /* Main area: full width */
+  .main {
+    width: 100%;
+    padding: 0;
+    padding-bottom: 0;
+  }
+
+  .canvasCardWrap {
+    width: 100%;
+  }
+
+  /* Header row above canvas */
+  .projectNameBox {
+    position: relative;
+    top: auto;
+    left: auto;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 6px;
+    margin-bottom: 0;
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Both label and value the same size */
+  .projectLabel,
+  .projectValue {
+    font-size: 16px;
+  }
+
+  /* Value grows to push view-mode toggle to the far right */
+  .projectValue {
+    flex: 1;
+    min-width: 0;
+    max-width: none;
+  }
+
+  /* Hide the desktop view toggle inside projectNameBox — mobile uses mobileViewToggle instead */
+  .viewModeSwitchWrap {
+    display: none;
+  }
+
+  .canvasActions {
+    position: relative;
+    top: auto;
+    right: auto;
+    justify-content: flex-end;
+    margin-bottom: 0;
+    width: auto;
+    flex-shrink: 0;
+  }
+
+  .canvasToolbar {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin-top: 28px;
+    padding: 2px 10px;
+    width: max-content;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  /* Toolbar: scaled down for mobile (icons may be img or inline svg) */
+  .toolbarRow {
+    gap: 8px;
+  }
+
+  .toolBtn {
+    padding: 4px 4px;
+    gap: 3px;
+    border-radius: 8px;
+  }
+
+  .toolIcon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .toolIcon img,
+  .toolIcon svg {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  .toolLabel {
+    font-size: 9px;
+  }
+
+  /* Board action buttons: moderate scale-down for mobile */
+  .actionBtn {
+    width: 30px;
+    height: 30px;
+    border-radius: 7px;
+  }
+
+  .actionBtn img {
+    width: 17px !important;
+    height: 17px !important;
+  }
+
+  .actionsRow {
+    gap: 8px;
+  }
+
+  /* List view: ensure table doesn't squish below its min content */
+  .boardListCard {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 320px;
+  }
+
+  .boardListTable {
+    min-width: 580px;
+    table-layout: auto;
+  }
+
+  /* Other moodboards: full-width, 2-column */
+  .otherMoodboardsSection {
+    width: calc(100% - 32px);
+    margin: 20px 16px 0;
+  }
+
+  .otherMoodboardsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  /* View mode buttons: slightly narrower */
+  .viewModeBtn {
+    min-width: 72px;
+  }
+
+  /* Mobile FAB to toggle sidebar */
+  .mobileSidebarBtn {
+    display: flex;
+    position: fixed;
+    bottom: 24px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    align-items: center;
+    justify-content: center;
+    z-index: 160;
+    cursor: pointer;
+    font-size: 20px;
+    color: #555;
+  }
+}
+
+.bgFocusModeRoot {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: 100;
+
+  .backLink,
+  .mobileTopBar,
+  .sidebarWrap,
+  .otherMoodboardsSection,
+  .projectNameBox,
+  .canvasHeader,
+  .canvasActions,
+  .canvasToolbar,
+  .mobileSidebarBtn {
+    display: none;
+  }
+
+  .editorPageContent {
+    height: 100%;
+    padding: 80px 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .main {
+    height: 100%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 767px) {
+    .canvasCardWrap {
+      width: 100%;
+      max-width: calc(100vw - 24px);
+    }
+
+    .bgPickerDock {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%);
+      margin-top: 0;
+      z-index: 201;
+    }
+  }
+}

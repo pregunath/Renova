@@ -1,0 +1,20 @@
+.DS_Store
+
+# AI/Claude artifacts
+CLAUDE.md
+.claude/
+MEMORY.md
+*.plan.md
+PLAN.md
+plan.md
+
+# Ignore coverage (VERY IMPORTANT)
+backend/coverage/
+coverage/
+
+# Node modules
+node_modules/
+
+# Env files
+.env
+

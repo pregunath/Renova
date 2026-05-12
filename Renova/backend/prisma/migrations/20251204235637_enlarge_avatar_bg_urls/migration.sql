@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `user` MODIFY `avatarUrl` TEXT NULL,
+    MODIFY `bgImageUrl` TEXT NULL;

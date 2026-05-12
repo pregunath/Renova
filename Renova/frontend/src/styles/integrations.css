@@ -1,0 +1,585 @@
+/* Pinterest Integration Styles */
+.pinterest-integration {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 80vh;
+}
+
+.integration-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.integration-header h1 {
+  color: #2d3748;
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.connect-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.connect-card {
+  text-align: center;
+  padding: 3rem;
+  border: 2px dashed #cbd5e0;
+  border-radius: 12px;
+  background: #f7fafc;
+  max-width: 500px;
+  width: 100%;
+}
+
+.connect-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.connect-card h2 {
+  margin-bottom: 1rem;
+  color: #2d3748;
+}
+
+.connect-card p {
+  margin-bottom: 2rem;
+  color: #718096;
+  line-height: 1.6;
+}
+
+.moodboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.moodboard-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.control-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.moodboard-layout {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 2rem;
+  height: 70vh;
+}
+
+.pins-sidebar {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  overflow-y: auto;
+  background: white;
+}
+
+.pins-sidebar h3 {
+  margin: 0 0 1rem 0;
+  color: #2d3748;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #718096;
+}
+
+.pins-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.pin-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  background: white;
+}
+
+.pin-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.pin-item img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.pin-info {
+  padding: 0.75rem;
+}
+
+.pin-title {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #2d3748;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.moodboard-area {
+  border: 2px dashed #cbd5e0;
+  border-radius: 12px;
+  background: #f7fafc;
+  overflow: hidden;
+  position: relative;
+}
+
+.moodboard {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(45deg, #f0f0f0 25%, transparent 25%), 
+    linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), 
+    linear-gradient(45deg, transparent 75%, #f0f0f0 75%), 
+    linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+.moodboard-item {
+  position: absolute;
+  border: 2px solid #4299e1;
+  border-radius: 8px;
+  background: white;
+  cursor: move;
+  transition: box-shadow 0.2s;
+  overflow: hidden;
+}
+
+.moodboard-item:hover {
+  box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+}
+
+.moodboard-item.dragging {
+  box-shadow: 0 6px 20px rgba(66, 153, 225, 0.5);
+  z-index: 1000;
+  cursor: grabbing;
+}
+
+.moodboard-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.remove-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #e53e3e;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.moodboard-item:hover .remove-btn {
+  opacity: 1;
+}
+
+.remove-btn:hover {
+  background: #c53030;
+}
+
+.empty-moodboard {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #718096;
+}
+
+/* Callback Page Styles */
+.callback-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 2rem;
+}
+
+.callback-container {
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.callback-status {
+  padding: 2rem;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #4299e1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.success-icon, .error-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.callback-status h2 {
+  margin-bottom: 1rem;
+  color: #2d3748;
+}
+
+.callback-status p {
+  color: #718096;
+  margin-bottom: 1.5rem;
+}
+
+/* Button Styles */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+  font-size: 0.875rem;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn.gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn.gradient:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn.outline {
+  background: white;
+  border: 1px solid #cbd5e0;
+  color: #4a5568;
+}
+
+.btn.outline:hover:not(:disabled) {
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.btn.danger {
+  background: #e53e3e;
+  color: white;
+}
+
+.btn.danger:hover:not(:disabled) {
+  background: #c53030;
+}
+
+/* Loading and Error States */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.loading {
+  font-size: 1.125rem;
+  color: #718096;
+}
+
+.error-message {
+  background: #fed7d7;
+  color: #c53030;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  border: 1px solid #feb2b2;
+}
+
+/* Boards Section Styles */
+.boards-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border: 1px solid #e2e8f0;
+}
+
+.boards-section h3 {
+  margin: 0 0 1rem 0;
+  color: #2d3748;
+  font-size: 1.25rem;
+}
+
+.boards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.board-item {
+  padding: 1.5rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #f7fafc;
+}
+
+.board-item:hover {
+  border-color: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+  background: white;
+}
+
+.board-item.selected {
+  border-color: #667eea;
+  background: #f0f4ff;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.board-info h4 {
+  margin: 0 0 0.5rem 0;
+  color: #2d3748;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.board-info p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.board-privacy {
+  text-transform: capitalize;
+  font-size: 0.8rem;
+  color: #888;
+  font-style: italic;
+}
+
+/* Pins Section Styles */
+.pins-section {
+  margin-top: 2rem;
+}
+
+.pins-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.5rem;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.pins-header h3 {
+  margin: 0;
+  color: #2d3748;
+  font-size: 1.25rem;
+}
+
+.pins-count {
+  font-size: 0.9rem;
+  color: #666;
+  margin-left: 0.5rem;
+  font-weight: normal;
+}
+
+/* Enhanced Pin Grid Styles */
+.pin-image-container {
+  width: 100%;
+  height: 150px;
+  position: relative;
+  background: #f7fafc;
+  overflow: hidden;
+}
+
+.pin-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.pin-item:hover .pin-image-container img {
+  transform: scale(1.05);
+}
+
+.no-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #e2e8f0;
+  color: #718096;
+}
+
+.no-image-placeholder span {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.7;
+}
+
+.no-image-placeholder p {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+/* Empty States */
+.empty-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .moodboard-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  
+  .pins-sidebar {
+    max-height: 400px;
+  }
+  
+  .moodboard-area {
+    min-height: 500px;
+  }
+  
+  .boards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .pinterest-integration {
+    padding: 1rem;
+  }
+  
+  .integration-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .moodboard-controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .control-buttons {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .boards-section {
+    padding: 1rem;
+  }
+  
+  .boards-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .board-item {
+    padding: 1rem;
+  }
+  
+  .pins-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  
+  .pins-header h3 {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .boards-section h3 {
+    font-size: 1.1rem;
+  }
+  
+  .board-info h4 {
+    font-size: 1rem;
+  }
+  
+  .empty-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .empty-actions .btn {
+    width: 100%;
+    max-width: 200px;
+  }
+}

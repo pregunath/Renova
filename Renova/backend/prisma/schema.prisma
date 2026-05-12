@@ -1,0 +1,102 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String?
+  name         String?
+  occupation   String?
+  googleId     String?  @unique
+  role         String   @default("user")
+  avatarUrl    String?
+  bgImageUrl   String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  moodboards   Moodboard[]
+  generations  Generation[]
+
+  stripeCustomerId String?
+
+  pinterestIntegration PinterestIntegration?
+
+  //Add-on balances
+  bankedGenerationsPurchased Int @default(0) // total bought (for progress bar)
+  bankedGenerationsRemaining Int @default(0) // remaining bank (for enforcement)
+  moodboardsExtraSlots       Int @default(0) // increases moodboard cap
+
+  // session ids we already processed to avoid double-granting
+  processedAddonSessions     Json?
+  @@map("user")
+}
+
+model Moodboard {
+  id           Int          @id @default(autoincrement())
+  user         User         @relation(fields: [userId], references: [id])
+  userId       Int
+  title        String
+  scene        Json
+  width        Int
+  height       Int
+  background   String?
+  thumbnailUrl String?
+  generations  Generation[] 
+  isPublic     Boolean      @default(true)
+  isPreset     Boolean      @default(false)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  @@map("moodboard")
+}
+
+model PinterestIntegration {
+  id              Int      @id @default(autoincrement())
+  userId          Int      @unique
+  accessToken     String   @db.Text
+  refreshToken    String?  @db.Text
+  expiresAt       DateTime
+  pinterestUserId String
+  username        String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("pinterest_integrations")
+}
+
+model Generation {
+  id           Int        @id @default(autoincrement())
+  user         User       @relation(fields: [userId], references: [id])
+  userId       Int
+  moodboard    Moodboard? @relation(fields: [moodboardId], references: [id])
+  moodboardId  Int?
+  imageUrl     String  
+  prompt       String     @db.Text
+  baseImageUrl String? 
+  inputItems   Json?  
+  modelKey String?
+  isPublic     Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  @@map("generation")
+}
+
+model Plan {
+  id       Int    @id @default(autoincrement())
+  key      String @unique // "free" | "starter" | "pro" | ...
+  name     String
+  priceId  String @unique // Stripe price_XXX
+  interval String // "mo" | "year"
+  price    Int // cents
+  limits   Json // e.g. { generations: 100, moodboard: 5 }
+  perks    Json // e.g. ["Email support", "Priority support"]
+  @@map("plan")
+}

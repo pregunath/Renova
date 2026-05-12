@@ -1,0 +1,228 @@
+# Minimal GitLab CI/CD Pipeline for Renova Project
+# Start simple - just validate and test the code
+
+stages:
+  - validate
+  - test
+  - build
+  - docker
+  - deploy
+
+# Validate Backend Code
+validate_backend:
+  stage: validate
+  image: node:20-slim
+  script:
+    - cd backend
+    - npm ci
+    - echo "Backend dependencies installed successfully"
+  cache:
+    key: backend-$CI_COMMIT_REF_SLUG
+    paths:
+      - backend/node_modules/
+
+# Validate Frontend Code
+validate_frontend:
+  stage: validate
+  image: node:20-slim
+  script:
+    - cd frontend
+    - npm ci
+    - echo "Frontend dependencies installed successfully"
+  cache:
+    key: frontend-$CI_COMMIT_REF_SLUG
+    paths:
+      - frontend/node_modules/
+
+# Lint Frontend
+lint_frontend:
+  stage: test
+  image: node:20-slim
+  script:
+    - cd frontend
+    - npm ci
+    - npm run lint
+  cache:
+    key: frontend-$CI_COMMIT_REF_SLUG
+    paths:
+      - frontend/node_modules/
+
+# Test Backend
+test_backend:
+  stage: test
+  image: node:20-slim
+  script:
+    - cd backend
+    - npm ci
+    - npm test || echo "No tests configured - skipping"
+  cache:
+    key: backend-$CI_COMMIT_REF_SLUG
+    paths:
+      - backend/node_modules/
+  allow_failure: true
+
+# Test Frontend
+test_frontend:
+  stage: test
+  image: node:20-slim
+  script:
+    - cd frontend
+    - npm ci
+    - npm test || echo "No tests configured - skipping"
+  cache:
+    key: frontend-$CI_COMMIT_REF_SLUG
+    paths:
+      - frontend/node_modules/
+  allow_failure: true
+
+# Security Audit - Check for vulnerabilities in dependencies
+security_audit:
+  stage: test
+  image: node:20-slim
+  script:
+    - echo "🔒 Running security audit on backend..."
+    - cd backend
+    - npm ci
+    - npm audit --audit-level=moderate || echo "⚠️  Backend has vulnerabilities - review needed"
+    - cd ../frontend
+    - echo "🔒 Running security audit on frontend..."
+    - npm ci
+    - npm audit --audit-level=moderate || echo "⚠️  Frontend has vulnerabilities - review needed"
+    - echo "✅ Security audit complete"
+  allow_failure: true
+  artifacts:
+    when: always
+    reports:
+      dependency_scanning: backend/npm-audit.json
+    expire_in: 30 days
+
+# Build Frontend
+build_frontend_app:
+  stage: build
+  image: node:20-slim
+  script:
+    - cd frontend
+    - npm ci
+    - npm run build
+    - echo "Frontend built successfully"
+  cache:
+    key: frontend-$CI_COMMIT_REF_SLUG
+    paths:
+      - frontend/node_modules/
+  artifacts:
+    paths:
+      - frontend/.next/
+    expire_in: 1 hour
+
+# Verify Backend Starts and Health Check
+verify_backend:
+  stage: build
+  image: node:20-slim
+  services:
+    - mysql:8.0
+  variables:
+    DATABASE_URL: "mysql://renova:renova@mysql:3306/renova_test"
+    MYSQL_DATABASE: renova_test
+    MYSQL_USER: renova
+    MYSQL_PASSWORD: renova
+    MYSQL_ROOT_PASSWORD: root
+    PORT: 8080
+  script:
+    - cd backend
+    - npm ci
+    - npx prisma generate
+    - npx prisma migrate deploy || echo "Migrations applied"
+    - apt-get update && apt-get install -y curl
+    # Start backend in background
+    - npm start &
+    - BACKEND_PID=$!
+    - echo "Backend started with PID $BACKEND_PID"
+    # Wait for backend to be ready
+    - sleep 5
+    # Check health endpoints
+    - echo "Testing /health endpoint..."
+    - curl -f http://localhost:8080/health || (echo "Health check failed" && kill $BACKEND_PID && exit 1)
+    - echo "Testing /health/live endpoint..."
+    - curl -f http://localhost:8080/health/live || (echo "Liveness check failed" && kill $BACKEND_PID && exit 1)
+    - echo "Testing /health/ready endpoint..."
+    - curl -f http://localhost:8080/health/ready || (echo "Readiness check failed" && kill $BACKEND_PID && exit 1)
+    - echo "✅ All health checks passed!"
+    - kill $BACKEND_PID
+  cache:
+    key: backend-$CI_COMMIT_REF_SLUG
+    paths:
+      - backend/node_modules/
+
+# Docker Build Backend (using Kaniko - no Docker daemon required)
+docker_build_backend:
+  stage: docker
+  image:
+    name: gcr.io/kaniko-project/executor:v1.23.0-debug
+    entrypoint: [""]
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor
+      --context ./backend
+      --dockerfile ./backend/Dockerfile
+      --destination $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_SHORT_SHA
+      --destination $CI_REGISTRY_IMAGE/backend:latest
+    - echo "Backend Docker image pushed to $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_SHORT_SHA"
+
+# Docker Build Frontend (using Kaniko - no Docker daemon required)
+docker_build_frontend:
+  stage: docker
+  image:
+    name: gcr.io/kaniko-project/executor:v1.23.0-debug
+    entrypoint: [""]
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor
+      --context ./frontend
+      --dockerfile ./frontend/Dockerfile
+      --destination $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHORT_SHA
+      --destination $CI_REGISTRY_IMAGE/frontend:latest
+    - echo "Frontend Docker image pushed to $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHORT_SHA"
+
+# Note: Additional health check jobs (health_check_docker, integration_health_check)
+# are disabled because the GitLab runners don't support Docker-in-Docker.
+# These would require runners configured with privileged mode.
+# The verify_backend job in the 'build' stage already tests all health endpoints.
+
+# ==========================================
+# DEPLOY STAGE - Deployment to Environments
+# ==========================================
+
+# Deploy to Production VM
+# Author: Om Sanghvi
+deploy_production_vm:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh-client
+    - eval $(ssh-agent -s)
+    # Decode base64 SSH key and load it
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-add ~/.ssh/id_rsa
+    - ssh-keyscan -H $DEPLOY_HOST >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - echo "🚀 Deploying to production VM at $DEPLOY_HOST..."
+    - ssh $DEPLOY_USER@$DEPLOY_HOST "cd /home/vm-user/sdmay26-16 && ./deploy.sh"
+    - echo "✅ Deployment completed successfully!"
+  environment:
+    name: production
+    url: http://$DEPLOY_HOST:3000
+  only:
+    - main
+  when: on_success

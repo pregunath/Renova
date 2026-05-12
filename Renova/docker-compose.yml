@@ -1,0 +1,57 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: renova_mysql
+    environment:
+      MYSQL_DATABASE: renova_dev
+      MYSQL_USER: renova
+      MYSQL_PASSWORD: renova
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3309:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-urenova", "-prenova"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: renova_backend
+    env_file:
+      - ./backend/.env
+    environment:
+      DATABASE_URL: mysql://renova:renova@mysql:3306/renova_dev
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    command: >
+      sh -c "npx prisma migrate deploy &&
+             node src/server.js"
+
+  frontend:
+    build:
+      context: ./frontend
+      # Optional build arg - frontend auto-detects API URL from browser if not set
+      # args:
+      #   NEXT_PUBLIC_API_BASE_URL: "http://yourdomain.com:8080"
+      args:
+        NEXT_PUBLIC_GOOGLE_CLIENT_ID: ${NEXT_PUBLIC_GOOGLE_CLIENT_ID}
+    container_name: renova_frontend
+    env_file:
+      - ./frontend/.env
+    # Optional: Override API URL (frontend auto-detects if not set)
+    # environment:
+    #   NEXT_PUBLIC_API_BASE_URL: "http://yourdomain.com:8080"
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+
+volumes:
+  mysql_data:
+
